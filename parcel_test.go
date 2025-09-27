@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -112,7 +113,7 @@ func TestSetStatus(t *testing.T) {
 	// получите добавленную посылку и убедитесь, что статус обновился
 	parcel_get, err := store.Get(number)
 	require.NoError(t, err)
-	require.Equal(t, parcel_get.Status, ParcelStatusSent)
+	assert.Equal(t, parcel_get.Status, ParcelStatusSent)
 }
 
 // TestGetByClient проверяет получение посылок по идентификатору клиента
@@ -151,15 +152,15 @@ func TestGetByClient(t *testing.T) {
 	// получите список посылок по идентификатору клиента, сохранённого в переменной client
 	storedParcels, err := store.GetByClient(client)
 	require.NoError(t, err)
-	require.Equal(t, len(storedParcels), len(parcels))
+	assert.Len(t, storedParcels, len(parcels))
 	// убедитесь в отсутствии ошибки
 	// убедитесь, что количество полученных посылок совпадает с количеством добавленных
 
 	// check
 	for _, parcel := range storedParcels {
 		check_parcel, ok := parcelMap[parcel.Number]
-		require.True(t, ok)
-		require.Equal(t, parcel, check_parcel)
+		assert.True(t, ok)
+		assert.Equal(t, parcel, check_parcel)
 		// в parcelMap лежат добавленные посылки, ключ - идентификатор посылки, значение - сама посылка
 		// убедитесь, что все посылки из storedParcels есть в parcelMap
 		// убедитесь, что значения полей полученных посылок заполнены верно
